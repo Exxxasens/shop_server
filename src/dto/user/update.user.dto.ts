@@ -10,5 +10,5 @@ export interface UpdateUserDto {
 export const UpdateUserSchema = Joi.object({
     name: Joi.string().min(3).max(64).required(),
     lastname: Joi.string().min(3).max(64).required(),
-    email: Joi.string().email().required()
+    email: Joi.string().email().required().lowercase()
 });

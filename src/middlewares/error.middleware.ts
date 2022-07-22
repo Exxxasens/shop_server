@@ -2,6 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import HttpException from '../exceptions/HttpException';
 
 const errorMiddleware = (error: any, req: Request, res: Response, next: NextFunction) => {
+    if (error) {
+        console.log(error);
+    }
     if (error instanceof HttpException) {
         return res.json({
             status: error.status,

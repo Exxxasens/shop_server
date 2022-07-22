@@ -50,6 +50,11 @@ class UserService {
         return bcrypt.compare(password, user.get('password', null, { getters: false }));
     }
 
+    public async updatePassword(user: UserDocument, password: string) {
+        const hashedPassword = await this.hashPassword(password);
+        return user.updateOne({ password: hashedPassword });
+    }
+
     private generateToken(user: UserDto) {
         const payload: JwtPayload = {
             id: user._id
@@ -60,11 +65,6 @@ class UserService {
 
     private async hashPassword(password: string) {
         return bcrypt.hash(password, 12);
-    }
-
-    public async updatePassword(user: UserDocument, password: string) {
-        const hashedPassword = await this.hashPassword(password);
-        return user.updateOne({ password: hashedPassword });
     }
 }
 

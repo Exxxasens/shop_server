@@ -6,6 +6,6 @@ export interface LoginUserDto {
 }
 
 export const LoginUserSchema = Joi.object({
-    email: Joi.string().email().required(),
+    email: Joi.string().email().required().lowercase(),
     password: Joi.string().required()
 });

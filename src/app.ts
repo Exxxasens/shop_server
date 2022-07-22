@@ -1,12 +1,12 @@
+import { config } from 'dotenv';
+config();
+
 import express, { Express } from 'express';
-import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import Controller from './interfaces/controller.interface';
 import useJwtStartegy from './passport/jwt.strategy';
 import mongoose from 'mongoose';
 import errorMiddleware from './middlewares/error.middleware';
-
-dotenv.config();
 
 export default class App {
     public app: Express = express();

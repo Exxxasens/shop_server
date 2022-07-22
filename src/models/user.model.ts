@@ -13,7 +13,8 @@ const UserSchema = new mongoose.Schema<UserDto>(
     {
         email: {
             type: String,
-            required: true
+            required: true,
+            unique: true
         },
         name: {
             type: String,
@@ -26,10 +27,6 @@ const UserSchema = new mongoose.Schema<UserDto>(
         password: {
             type: String,
             required: true
-        },
-        phone: {
-            type: String,
-            default: ''
         }
         /*
         orders: {

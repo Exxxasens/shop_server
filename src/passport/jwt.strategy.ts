@@ -3,6 +3,8 @@ import { ExtractJwt, Strategy, StrategyOptions, VerifiedCallback } from 'passpor
 import JwtPayload from '../interfaces/jwt.payload.interface';
 import UserModel from '../models/user.model';
 import TokenExpiredException from '../exceptions/TokenExpiredException';
+import UserDocument from '../interfaces/user.document.interface';
+import { CallbackError } from 'mongoose';
 
 const secret = process.env.JWT_SECRET || 'secret';
 
@@ -11,12 +13,11 @@ const options: StrategyOptions = {
     ignoreExpiration: true,
     secretOrKey: secret
 };
-
 const useJwtStrategy = () => {
     passport.use(
-        'jwt-user',
+        'user-jwt',
         new Strategy(options, function ({ id, exp }: JwtPayload, done: VerifiedCallback) {
-            UserModel.findOne({ _id: id }, function (err, user) {
+            UserModel.findOne({ _id: id }, function (err: CallbackError, user: UserDocument) {
                 if (err) {
                     return done(err, null);
                 }
