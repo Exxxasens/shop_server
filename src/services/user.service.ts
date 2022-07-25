@@ -29,7 +29,7 @@ class UserService {
         const foundUser = await UserModel.findOne({ email });
 
         if (!foundUser) {
-            throw new UserNotFoundException();
+            throw new WrongCredentialsException();
         }
 
         const isPasswordMatching = await this.comparePassword(foundUser, password);
@@ -47,12 +47,13 @@ class UserService {
     }
 
     public comparePassword(user: UserDocument, password: string) {
+        console.log(user.get('password'), password);
         return bcrypt.compare(password, user.get('password', null, { getters: false }));
     }
 
     public async updatePassword(user: UserDocument, password: string) {
         const hashedPassword = await this.hashPassword(password);
-        return user.updateOne({ password: hashedPassword });
+        return user.updateOne({ password: hashedPassword }, { new: true });
     }
 
     private generateToken(user: UserDto) {

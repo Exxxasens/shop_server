@@ -1,14 +1,9 @@
 import Joi from 'joi';
+import { CreateAddressDto } from './create.address.dto';
 
-export interface CreateAddressDto {
-    region: string;
-    city: string;
-    street: string;
-    building: string;
-    postCode: string;
-}
+export interface UpdateAddressDto extends CreateAddressDto {}
 
-export const CreateAddressSchema = Joi.object<CreateAddressDto>({
+export const UpdateAddressSchema = Joi.object<CreateAddressDto>({
     region: Joi.string().required(),
     city: Joi.string().required(),
     street: Joi.string().required(),

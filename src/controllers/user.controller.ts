@@ -8,6 +8,8 @@ import validateMiddleware from '../middlewares/validate.middleware';
 import { UpdateUserDto, UpdateUserSchema } from '../dto/user/update.user.dto';
 import authUserMiddleware from '../middlewares/auth.user.middleware';
 
+import * as bcrypt from 'bcrypt';
+
 class UserController implements Controller {
     public path = '/api/user';
     public router = Router();
@@ -62,7 +64,7 @@ class UserController implements Controller {
                 throw new WrongCredentialsException();
             }
 
-            if (await userService.comparePassword(user, password)) {
+            if (!(await userService.comparePassword(user, password))) {
                 throw new WrongCredentialsException();
             }
 

@@ -6,14 +6,14 @@ const errorMiddleware = (error: any, req: Request, res: Response, next: NextFunc
         console.log(error);
     }
     if (error instanceof HttpException) {
-        return res.json({
+        return res.status(error.status).json({
             status: error.status,
             message: error.message
         });
     }
 
     if (error instanceof Error) {
-        return res.json({
+        return res.status(500).json({
             status: 500,
             message: error.message
         });

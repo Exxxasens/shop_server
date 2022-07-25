@@ -1,13 +1,5 @@
 import * as mongoose from 'mongoose';
 import { UserDto } from '../dto/user/user.dto';
-import { AddressDto } from '../dto/address/address.dto';
-
-const UserAddressSchema = new mongoose.Schema<AddressDto>({
-    city: String,
-    street: String,
-    buildingNumber: String,
-    postCode: String
-});
 
 const UserSchema = new mongoose.Schema<UserDto>(
     {
@@ -27,7 +19,7 @@ const UserSchema = new mongoose.Schema<UserDto>(
         password: {
             type: String,
             required: true
-        }
+        },
         /*
         orders: {
             type: mongoose.Schema.Types.ObjectId,
@@ -37,11 +29,13 @@ const UserSchema = new mongoose.Schema<UserDto>(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Cart'
         },
-        address: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Address'
-        }]
         */
+        address: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Address'
+            }
+        ]
     },
     {
         timestamps: true,
