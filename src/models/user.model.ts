@@ -20,6 +20,12 @@ const UserSchema = new mongoose.Schema<UserDto>(
             type: String,
             required: true
         },
+        role: {
+            type: String,
+            required: false,
+            enum: ['user', 'admin'],
+            default: 'user'
+        },
         /*
         orders: {
             type: mongoose.Schema.Types.ObjectId,

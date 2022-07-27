@@ -15,12 +15,12 @@ class UserService {
     expireTime = process.env.JWT_EXPIRE_TIME || '1d';
     secret = process.env.JWT_SECRET || 'secret';
 
-    public async create({ email, password, name, lastname }: CreateUserDto) {
+    public async create({ email, password, name, lastname, role }: CreateUserDto) {
         if (await UserModel.findOne({ email })) {
             throw new UserAlreadyRegisteredException();
         }
         const hashedPassword = await this.hashPassword(password);
-        const createdUser = await UserModel.create({ email, password: hashedPassword, name, lastname });
+        const createdUser = await UserModel.create({ email, password: hashedPassword, name, lastname, role });
         // const tokenData = this.generateToken(createdUser);
         return createdUser;
     }

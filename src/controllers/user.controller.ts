@@ -9,6 +9,9 @@ import { UpdateUserDto, UpdateUserSchema } from '../dto/user/update.user.dto';
 import authUserMiddleware from '../middlewares/auth.user.middleware';
 
 import * as bcrypt from 'bcrypt';
+import { CreateUserDto, CreateUserSchema } from '../dto/user/create.user.dto';
+import AdminAlreadyInitException from '../exceptions/AdminAlreadyInitException';
+import UserAlreadyRegisteredException from '../exceptions/UserAlreadyRegisteredExeption';
 
 class UserController implements Controller {
     public path = '/api/user';
@@ -22,6 +25,7 @@ class UserController implements Controller {
         this.router.get('/', authUserMiddleware, this.getCurrentUser);
         this.router.put('/', authUserMiddleware, validateMiddleware(UpdateUserSchema), this.update);
         this.router.put('/password', authUserMiddleware, validateMiddleware(UpdateUserPasswordSchema), this.updatePassword);
+        this.router.post('/admin/init', validateMiddleware(CreateUserSchema), this.initAdmin);
     }
 
     async getCurrentUser(req: Request, res: Response, next: NextFunction) {
@@ -71,6 +75,25 @@ class UserController implements Controller {
             const updatedUser = await userService.updatePassword(user, newPassword);
 
             res.json(updatedUser);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    private async initAdmin(req: Request, res: Response, next: NextFunction) {
+        try {
+            const body: CreateUserDto = req.body;
+            body.role = 'admin';
+
+            const isInit = await UserModel.findOne({ role: 'admin' });
+
+            if (isInit) {
+                throw new AdminAlreadyInitException();
+            }
+
+            const admin = await userService.create(body);
+
+            return res.json(admin);
         } catch (error) {
             next(error);
         }
