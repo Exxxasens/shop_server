@@ -4,21 +4,28 @@ export interface CreateProductDto {
     name: string;
     description: string;
     shortDescription?: string;
-    price: number;
     // TODO: create options model
-    options: string[];
     show: boolean;
     isDraft: boolean;
+    buyPrice: number;
+    sellPrice: number;
+    quantity: number;
+    vendorCode: string;
     categories: string[];
+    properties: string[];
+    variants: string[];
 }
 
 export const CreateProductSchema = Joi.object<CreateProductDto>({
     name: Joi.string().default(''),
     description: Joi.string().default(''),
     shortDescription: Joi.string().default(''),
-    price: Joi.number().default(0),
     show: Joi.boolean().default(false),
-    options: Joi.array().items(Joi.string()).default([]),
     isDraft: Joi.boolean().default(true),
-    categories: Joi.array().items(Joi.string()).default([])
+    buyPrice: Joi.number().default(0),
+    sellPrice: Joi.number().default(0),
+    vendorCode: Joi.string().default(''),
+    categories: Joi.array().items(Joi.string().hex().length(24)).default([]),
+    properties: Joi.array().items(Joi.string().hex().length(24)).default([]),
+    variants: Joi.array().items(Joi.string().hex().length(24)).default([])
 });

@@ -14,20 +14,43 @@ const ProductSchema = new mongoose.Schema<ProductDto>({
         type: String,
         default: ''
     },
-    price: {
+    show: {
+        type: Boolean,
+        required: true
+    },
+    sellPrice: {
         type: Number,
         required: true
     },
-    options: [String],
-    show: {
-        type: Boolean,
+    buyPrice: {
+        type: Number,
+        required: true
+    },
+    vendorCode: {
+        type: String,
+        required: true
+    },
+    quantity: {
+        type: Number,
         required: true
     },
     isDraft: {
         type: Boolean,
         required: true
     },
-    categories: [String]
+    properties: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Property'
+        }
+    ],
+    categories: [String],
+    variants: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Product'
+        }
+    ]
 });
 
 const ProductModel = mongoose.model('Product', ProductSchema);

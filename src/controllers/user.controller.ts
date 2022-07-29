@@ -7,11 +7,8 @@ import userService from '../services/user.service';
 import validateMiddleware from '../middlewares/validate.middleware';
 import { UpdateUserDto, UpdateUserSchema } from '../dto/user/update.user.dto';
 import authUserMiddleware from '../middlewares/auth.user.middleware';
-
-import * as bcrypt from 'bcrypt';
 import { CreateUserDto, CreateUserSchema } from '../dto/user/create.user.dto';
 import AdminAlreadyInitException from '../exceptions/AdminAlreadyInitException';
-import UserAlreadyRegisteredException from '../exceptions/UserAlreadyRegisteredExeption';
 
 class UserController implements Controller {
     public path = '/api/user';

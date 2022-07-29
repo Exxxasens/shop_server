@@ -8,7 +8,12 @@ export const UpdateProductSchema = Joi.object<UpdateProductDto>({
     description: Joi.string().required(),
     shortDescription: Joi.string().required(),
     show: Joi.boolean().required(),
-    options: Joi.array().items(Joi.string()),
     isDraft: Joi.boolean().required(),
-    categories: Joi.array().items(Joi.string()).required()
+    buyPrice: Joi.number().required(),
+    sellPrice: Joi.number().required(),
+    vendorCode: Joi.string().required(),
+    quantity: Joi.number().required(),
+    categories: Joi.array().items(Joi.string().hex().length(24)),
+    properties: Joi.array().items(Joi.string().hex().length(24)),
+    variants: Joi.array().items(Joi.string().hex().length(24))
 });

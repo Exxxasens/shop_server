@@ -2,7 +2,7 @@ import Controller from '../interfaces/controller.interface';
 import { Router, Request, Response, NextFunction } from 'express';
 import validateMiddleware from '../middlewares/validate.middleware';
 import authAdminMiddleware from '../middlewares/auth.admin.middleware';
-import ProductModel from '../models/product.mode';
+import ProductModel from '../models/product.model';
 import ProductNotFoundException from '../exceptions/ProductNotFoundException';
 import { CreateProductSchema, CreateProductDto } from '../dto/product/create.product.dto';
 import { UpdateProductDto, UpdateProductSchema } from '../dto/product/update.product.dto';
@@ -21,7 +21,7 @@ class ProductController implements Controller {
         // admin routes
         this.router.delete('/:id', authAdminMiddleware, this.delete);
         this.router.post('/', authAdminMiddleware, validateMiddleware(CreateProductSchema), this.create);
-        this.router.put('/', authAdminMiddleware, validateMiddleware(UpdateProductSchema), this.update);
+        this.router.put('/:id', authAdminMiddleware, validateMiddleware(UpdateProductSchema), this.update);
     }
 
     private async get(req: Request, res: Response, next: NextFunction) {
@@ -37,6 +37,9 @@ class ProductController implements Controller {
         try {
             const { id } = req.params;
             const product = await ProductModel.findById(id);
+            if (!product) {
+                throw new ProductNotFoundException();
+            }
             res.json(product);
         } catch (error) {
             next(error);
@@ -46,7 +49,6 @@ class ProductController implements Controller {
     private async create(req: Request, res: Response, next: NextFunction) {
         try {
             const body: CreateProductDto = req.body;
-            console.log(body);
             const product = await ProductModel.create(body);
             return res.json(product);
         } catch (error) {
@@ -90,3 +92,36 @@ class ProductController implements Controller {
 }
 
 export default ProductController;
+
+/*
+
+{
+    properties: [{ type: "color", value: "red", _id: string.... }, { type: "color", value: "red"}] 
+    options: [
+        {  }
+    ]
+
+    PropertyModel = {
+        type: "color",
+        "value": "red"
+    }
+
+    properties = {
+        "color": [
+            "red",
+            "black"
+        ],
+        "size": [
+            "1",
+            "2"
+        ]
+    }
+
+
+
+}
+
+
+
+
+*/
