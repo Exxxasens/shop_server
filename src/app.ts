@@ -7,16 +7,15 @@ import Controller from './interfaces/controller.interface';
 import useJwtStartegy from './passport/jwt.strategy';
 import mongoose from 'mongoose';
 import errorMiddleware from './middlewares/error.middleware';
+import FileStorage from './multer';
 
 export default class App {
     public app: Express = express();
 
-    constructor(controllers: Controller[]) {
+    constructor() {
+        this.connectDatabase();
         this.initMiddlewares();
         this.initPassport();
-        this.connectDatabase();
-        this.useControllers(controllers);
-        this.app.use(errorMiddleware);
     }
 
     private initMiddlewares() {
@@ -34,15 +33,16 @@ export default class App {
             console.log('Please, provide database url to connect database');
             return;
         }
-        mongoose.connect(databaseURL, {}).then(() => {
-            console.log('database connected');
-        });
+        const connection = mongoose.connect(databaseURL);
+        FileStorage.init(connection);
     }
 
-    private useControllers(controllers: Controller[]) {
+    public useControllers(controllers: Controller[]) {
         controllers.forEach((controller) => {
             this.app.use(controller.path, controller.router);
         });
+
+        this.app.use(errorMiddleware);
     }
 
     public listen(port: string | number | undefined = process.env.PORT) {

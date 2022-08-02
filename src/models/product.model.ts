@@ -6,6 +6,7 @@ const ProductSchema = new mongoose.Schema<ProductDto>({
         type: String,
         default: ''
     },
+    images: [String],
     description: {
         type: String,
         default: ''
@@ -16,26 +17,26 @@ const ProductSchema = new mongoose.Schema<ProductDto>({
     },
     show: {
         type: Boolean,
+        default: false,
         required: true
     },
     sellPrice: {
         type: Number,
+        default: 0,
         required: true
     },
     buyPrice: {
         type: Number,
+        default: 0,
         required: true
     },
     vendorCode: {
         type: String,
-        required: true
+        default: ''
     },
     quantity: {
         type: Number,
-        required: true
-    },
-    isDraft: {
-        type: Boolean,
+        default: 0,
         required: true
     },
     properties: [
