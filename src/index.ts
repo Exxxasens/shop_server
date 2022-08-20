@@ -5,6 +5,7 @@ import AddressController from './controllers/address.controller';
 import ProductController from './controllers/product.controller';
 import PropertyController from './controllers/property.controller';
 import ImageController from './controllers/image.controller';
+import CategoryController from './controllers/category.controller';
 
 const server = new App();
 
@@ -14,7 +15,8 @@ server.useControllers([
     new AddressController(),
     new ProductController(),
     new PropertyController(),
-    new ImageController()
+    new ImageController(),
+    new CategoryController()
 ]);
 
 server.listen();

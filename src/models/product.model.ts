@@ -45,7 +45,10 @@ const ProductSchema = new mongoose.Schema<ProductDto>({
             ref: 'Property'
         }
     ],
-    categories: [String],
+    categories: [        {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category'
+    }],
     variants: [
         {
             type: mongoose.Schema.Types.ObjectId,

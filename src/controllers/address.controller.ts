@@ -17,7 +17,7 @@ class AddressController implements Controller {
         this.initRoutes();
     }
 
-    initRoutes() {
+    private initRoutes() {
         this.router.post('/', authUserMiddleware, validateMiddleware(CreateAddressSchema), this.create);
         this.router.put('/:id', authUserMiddleware, validateMiddleware(UpdateAddressSchema), this.update);
         this.router.delete('/:id', authUserMiddleware, this.delete);

@@ -31,7 +31,7 @@ class ProductController implements Controller {
 
     private async get(req: Request, res: Response, next: NextFunction) {
         try {
-            const products = await ProductModel.find({}).populate('properties');
+            const products = await ProductModel.find({}).populate('properties').populate("categories");
             res.json(products);
         } catch (error) {
             next(error);
@@ -41,7 +41,7 @@ class ProductController implements Controller {
     private async getById(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
-            const product = await ProductModel.findById(id).populate('properties');
+            const product = await ProductModel.findById(id).populate('properties').populate("categories");
             if (!product) {
                 throw new ProductNotFoundException();
             }
@@ -92,6 +92,7 @@ class ProductController implements Controller {
 
             return res.json(updatedProduct);
         } catch (error) {
+            console.log('ERROR HERE');
             next(error);
         }
     }
