@@ -6,6 +6,7 @@ import Controller from '../interfaces/controller.interface';
 import authAdminMiddleware from '../middlewares/auth.admin.middleware';
 import validateMiddleware from '../middlewares/validate.middleware';
 import CategoryModel from '../models/category.model';
+import ProductModel from '../models/product.model';
 
 class CategoryController implements Controller {
     public path = '/api/category';
@@ -66,6 +67,7 @@ class CategoryController implements Controller {
                 throw new CategoryNotFoundException();
             }
             await category.remove();
+            // TODO: Remove from all products deleted category
             res.json(category);
         } catch (error) {
             next(error);

@@ -9,6 +9,8 @@ import { UpdateProductDto, UpdateProductSchema } from '../dto/product/update.pro
 import FileStorage from '../multer';
 import ImageRequiredException from '../exceptions/ImageRequiredException';
 import ImageNotFoundException from '../exceptions/ImageNotFoundException';
+import CategoryModel from '../models/category.model';
+import CategoryNotFoundException from '../exceptions/CategoryNotFoundException';
 
 class ProductController implements Controller {
     public path = '/api/product';
@@ -21,6 +23,7 @@ class ProductController implements Controller {
     initRoutes() {
         this.router.get('/', this.get);
         this.router.get('/:id', this.getById);
+        this.router.get('/category/:id', this.getByCategory);
         // admin routes
         this.router.delete('/:id', authAdminMiddleware, this.delete);
         this.router.post('/', authAdminMiddleware, validateMiddleware(CreateProductSchema), this.create);
@@ -46,6 +49,27 @@ class ProductController implements Controller {
                 throw new ProductNotFoundException();
             }
             res.json(product);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    private async getByCategory(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+            const { sortBy, order } = req.query;
+            const category = await CategoryModel.findById(id);
+            if (!category) {
+                throw new CategoryNotFoundException();
+            }
+            const query = ProductModel.find({ categories: id }).populate('properties').populate("categories");
+            if (sortBy && order) {
+                query.sort({
+                    [sortBy?.toString()]: order === "asc" ? -1 : 1
+                })
+            }
+            res.json(await query);
+
         } catch (error) {
             next(error);
         }
