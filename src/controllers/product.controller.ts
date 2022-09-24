@@ -62,14 +62,13 @@ class ProductController implements Controller {
             if (!category) {
                 throw new CategoryNotFoundException();
             }
-            const query = ProductModel.find({ categories: id }).populate('properties').populate("categories");
+            const query = ProductModel.find({ categories: id, show: true }).populate('properties').populate("categories");
             if (sortBy && order) {
                 query.sort({
                     [sortBy?.toString()]: order === "asc" ? -1 : 1
                 })
             }
             res.json(await query);
-
         } catch (error) {
             next(error);
         }

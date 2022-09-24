@@ -6,6 +6,8 @@ import ProductController from './controllers/product.controller';
 import PropertyController from './controllers/property.controller';
 import ImageController from './controllers/image.controller';
 import CategoryController from './controllers/category.controller';
+import FilterController from './controllers/filter.controller';
+import OrderController from './controllers/order.controller';
 
 const server = new App();
 
@@ -16,7 +18,9 @@ server.useControllers([
     new ProductController(),
     new PropertyController(),
     new ImageController(),
-    new CategoryController()
+    new CategoryController(),
+    new FilterController(),
+    new OrderController()
 ]);
 
 server.listen();

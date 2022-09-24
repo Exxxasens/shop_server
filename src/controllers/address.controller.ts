@@ -8,6 +8,7 @@ import AddressNotFoundException from '../exceptions/AddressNotFoundException';
 import WrongCredentialsException from '../exceptions/WrongCredentailsException';
 import { AddressDto } from '../dto/address/address.dto';
 import authUserMiddleware from '../middlewares/auth.user.middleware';
+import AdressLimitExceeded from '../exceptions/AdressLimitExceeded';
 
 class AddressController implements Controller {
     public path = '/api/user/address';
@@ -47,6 +48,10 @@ class AddressController implements Controller {
 
             if (!user) {
                 throw new WrongCredentialsException();
+            }
+
+            if (user.address.length > 5) {
+                throw new AdressLimitExceeded();
             }
 
             const createdAddress = await AddressModel.create(createBody);

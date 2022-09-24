@@ -4,6 +4,7 @@ import { PropertyDto } from '../dto/property/property.dto';
 const PropertySchema = new mongoose.Schema<PropertyDto>({
     name: {
         type: String,
+        unqiue: true,
         required: true
     },
     value: {
